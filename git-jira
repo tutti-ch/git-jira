@@ -12,7 +12,11 @@ grep -o '"summary": *"[^"]*"' | \
 grep -o '"[^"]*"$' | \
 sed "s/\"//g" | \
 tr '[:upper:]' '[:lower:]' | \
-tr ' ' '-')
+tr ' ' '-' | \
+tr '.' '-' | \
+tr -d ':' | \
+tr -d '[' | \
+tr -d ']')
 
 full_name="$ticket_id-$name"
 
