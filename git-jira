@@ -1,13 +1,10 @@
 #!/bin/bash
 
-email=YOUR_EMAIL
-token=YOUR_TOKEN
 url=https://tutti-ch.atlassian.net
-
 ticket_id=$(echo $1 | tr '[:lower:]' '[:upper:]')
 
 name=$(curl $url/rest/api/2/issue/$1\?fields\=summary \
---user $email:$token 2>&1 | \
+--user $GIT_JIRA_EMAIL:$GIT_JIRA_TOKEN 2>&1 | \
 grep -o '"summary": *"[^"]*"' | \
 grep -o '"[^"]*"$' | \
 sed "s/\"//g" | \

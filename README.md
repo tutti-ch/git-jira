@@ -4,12 +4,12 @@ This bash script creates a branch named after to the summary of a JIRA ticket.
 
 # How to install
 
-1. Move the `git-jira` file somewhere in your `$PATH` for example:
-   `/usr/local/bin/git-jira`
-2. Change permissions `chmod +x /usr/local/bin/git-jira`
-3. Generate an access token here: https://id.atlassian.com/manage/api-tokens
-4. Replace the `token` variable in the `git-jira` file
-5. Replace the `email` variable with your email
+1. Clone this repository
+2. Add the `git-jira` folder to your `$PATH`
+3. Change permissions `chmod +x /path/to/my/repo/git-jira`
+4. Generate an access token here: https://id.atlassian.com/manage/api-tokens
+5. Define a variable GIT_JIRA_TOKEN (e.g. `export GIT_JIRA_TOKEN=asd232r29fdsf9ew8`)
+6. Define a variable GIT_JIRA_EMAIL (e.g. `export GIT_JIRA_EMAIL=ctpm@tutti.ch`)
 
 # Usage
 
