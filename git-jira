@@ -1,0 +1,26 @@
+#!/bin/bash
+
+email=YOUR_EMAIL
+token=YOUR_TOKEN
+url=https://tutti-ch.atlassian.net
+
+ticket_id=$(echo $1 | tr '[:lower:]' '[:upper:]')
+
+name=$(curl $url/rest/api/2/issue/$1\?fields\=summary \
+--user $email:$token 2>&1 | \
+grep -o '"summary": *"[^"]*"' | \
+grep -o '"[^"]*"$' | \
+sed "s/\"//g" | \
+tr '[:upper:]' '[:lower:]' | \
+tr ' ' '-')
+
+full_name="$ticket_id-$name"
+
+if [ -z "$name" ]; then
+    echo "Something went wrong. Couldn't find a ticket with ID $1"
+    exit 1
+else
+    echo "Creating branch: $full_name"
+    git fetch
+    git checkout -b "$1-$name" origin/master
+fi
