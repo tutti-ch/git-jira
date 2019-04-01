@@ -14,3 +14,13 @@ This bash script creates a branch named after to the summary of a JIRA ticket.
 # Usage
 
     git jira ASBE-300
+
+# Example
+
+    ➜  tutti-android git:(translation-fixes-ad-reply) ✗ git jira ASBE-387
+    
+    ...
+    Creating branch: ASBE-387-retry-verification-with-backoff
+    ...
+    
+    ➜  tutti-android git:(ASBE-387-retry-verification-with-backoff)
