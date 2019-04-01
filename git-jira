@@ -23,5 +23,5 @@ if [ -z "$name" ]; then
 else
     echo "Creating branch: $full_name"
     git fetch
-    git checkout -b "$1-$name" origin/master
+    git checkout $full_name 2>/dev/null || git checkout -b $full_name origin/master
 fi
