@@ -1,27 +1,37 @@
 #!/bin/bash
 
-url=https://tutti-ch.atlassian.net
+read_issue() {
+    jira_issue=$1
+    url="https://tutti-ch.atlassian.net/rest/api/2/issue/${jira_issue}?fields=summary"
+    curl -s --netrc "$url"
+}
+
+extract_sanitized_summary() {
+    grep -o '"summary": *"[^"]*"' | \
+        grep -o '"[^"]*"$' | \
+        sed "s/\"//g" | \
+        tr '[:upper:]' '[:lower:]' | \
+        tr ' ' '-' | \
+        tr '.' '-' | \
+        tr -d ':' | \
+        tr -d '[' | \
+        tr -d ']'
+}
+
+
 ticket_id=$(echo $1 | tr '[:lower:]' '[:upper:]')
-
-name=$(curl $url/rest/api/2/issue/$1\?fields\=summary \
---user $GIT_JIRA_EMAIL:$GIT_JIRA_TOKEN 2>&1 | \
-grep -o '"summary": *"[^"]*"' | \
-grep -o '"[^"]*"$' | \
-sed "s/\"//g" | \
-tr '[:upper:]' '[:lower:]' | \
-tr ' ' '-' | \
-tr '.' '-' | \
-tr -d ':' | \
-tr -d '[' | \
-tr -d ']')
-
+name=$(read_issue "$ticket_id" | extract_sanitized_summary)
 full_name="$ticket_id-$name"
 
 if [ -z "$name" ]; then
-    echo "Something went wrong. Couldn't find a ticket with ID $1"
+    echo "Something went wrong. Couldn't find a ticket with ID $ticket_id"
     exit 1
 else
     echo "Creating branch: $full_name"
+    remote_tracking_branch=
     git fetch
-    git checkout $full_name 2>/dev/null || git checkout -b $full_name origin/master
+    git checkout $full_name 2>/dev/null || {
+        echo "Create new local branch $full_name"
+        git checkout -B $full_name --no-track origin/master
+    }
 fi
