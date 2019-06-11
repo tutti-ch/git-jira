@@ -13,9 +13,7 @@ extract_sanitized_summary() {
         tr '[:upper:]' '[:lower:]' | \
         tr ' ' '-' | \
         tr '.' '-' | \
-        tr -d ':' | \
-        tr -d '[' | \
-        tr -d ']'
+        tr -d -c '[:lower:][0-9]_-'
 }
 
 
